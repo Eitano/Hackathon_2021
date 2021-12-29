@@ -37,7 +37,6 @@ def play_():
         
         udp_socket.close()
         portnum = unpack_data[2]
-
         print("Client started, listening for offer requests...")
         msg = "Received offer from {}".format(str(addrees[0]))
         msg += " attempting to connect..."
@@ -53,7 +52,7 @@ def play_():
             tcp_socket.close()
             
 
-    team_name = 'Optimus \n'
+    team_name = 'Omricon\n'
     tcp_socket.sendall(bytes(team_name, "utf-8"))
     print(tcp_socket.recv(1024).decode("utf-8"))
 
