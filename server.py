@@ -20,6 +20,7 @@ def start_game(client_side):
     # set 10 sec for a game
     client_side.settimeout(10) 
     try:
+        
         # recive answer from client
         returned_answer = client_side.recv(1024).decode("utf-8")
     except:
@@ -120,20 +121,18 @@ def play_():
                 open_msg += '\x1b[6;30;47m' + "\nHow much is {} ?".format(question) +' \x1b[0m'
                 open_msg = bytes(open_msg, "utf-8")
 
-                print(open_msg)
                 exception_returned = send_open_msg(client_side_1, client_side_2, open_msg, upd_socket, tcp_socket)
                 if exception_returned:
                     break
 
-                # An abstract class that provides methods to execute calls asynchronously
-                # get the result of the executor
+
                 client_1_result = executor.submit(start_game, client_side_1)
                 client_2_result = executor.submit(start_game, client_side_2)
+                # An abstract class that provides methods to execute calls asynchronously
+                # get the result of the executor
+                client_1_result, time_taken_c1 =  client_1_result.result().split(',')
+                client_2_result, time_taken_c2 =  client_2_result.result().split(',')                
 
-                client_1_result =  client_1_result.result()
-                client_2_result =  client_2_result.result()
-
-                
                 # check if clients disconnected before gaming means result is ''
                 if client_1_result == '' or client_2_result == '': 
                     try:
@@ -146,10 +145,11 @@ def play_():
                     break
 
                 # if None of the clients return result
-                if client_1_result is None and client_2_result is None:
+                if client_1_result == 'None' and client_2_result == 'None':
+
                     draw = '\x1b[7;30;43m' + '\nGame over!\n' + '\x1b[0m'
                     draw += '\x1b[7;30;43m' + "\nThe correct answer was {}!\n".format(answer) + '\x1b[0m'
-                    draw += '\x1b[7;30;43m' + "\nIt's a draw!\n" + + '\x1b[0m'
+                    draw += '\x1b[7;30;43m' + "\nIt's a draw!\n" + '\x1b[0m'
                     draw = bytes(draw, "utf-8")
 
                     # call send_finish_msg send draw to all and close them
@@ -158,20 +158,14 @@ def play_():
 
 
                 # if one of the client answer correct he is the winner else the other is win
-                result_c1 = client_1_result[0]
-                result_c2 = client_2_result[0]
-                time_taken_c1 = client_1_result[1]
-                time_taken_c2 = client_2_result[1]
-
-                winner = None
-          
+               
                 if time_taken_c1 < time_taken_c2:
-                    if result_c1 == answer:
+                    if client_1_result == answer:
                         winner = team_name_1
                     else:
                         winner = team_name_2
                 else:
-                    if result_c2 == answer:
+                    if client_2_result == answer:
                         winner = team_name_2
                     else:
                         winner = team_name_1
