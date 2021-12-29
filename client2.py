@@ -24,7 +24,6 @@ def play_():
         data_recived = None
         
         while True:
-            # print(udp_socket.recvfrom(1024))
             data_recived, addrees = udp_socket.recvfrom(1024)
             if data_recived is None:
                 continue
