@@ -6,7 +6,6 @@ import time
 
 
 def play_():
-    print("Client started, listening for offer requests...")
     port_udp = 13117
     getch_timeout = 10
 
@@ -38,7 +37,7 @@ def play_():
         
         udp_socket.close()
         portnum = unpack_data[2]
-
+        print("Client started, listening for offer requests...")
         msg = "Received offer from {}".format(str(addrees[0]))
         msg += " attempting to connect..."
         print(msg)
@@ -53,7 +52,7 @@ def play_():
             tcp_socket.close()
             
 
-    team_name = 'client_2\n'
+    team_name = 'Omricon\n'
     tcp_socket.sendall(bytes(team_name, "utf-8"))
     print(tcp_socket.recv(1024).decode("utf-8"))
 
