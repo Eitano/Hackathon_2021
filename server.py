@@ -125,9 +125,11 @@ def play_():
                 if exception_returned:
                     break
 
+                client_1_result = executor.submit(start_game, client_side_1)
+                client_2_result = executor.submit(start_game, client_side_2)
                 # An abstract class that provides methods to execute calls asynchronously
                 # get the result of the executor
-                client_1_result, time_taken_c1 =  client_1_result.result().split(',')
+                client_1_result, time_taken_c1 =  client_2_result.result().split(',')
                 client_2_result, time_taken_c2 =  client_2_result.result().split(',')                
 
                 # check if clients disconnected before gaming means result is ''
